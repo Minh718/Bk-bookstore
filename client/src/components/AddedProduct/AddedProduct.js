@@ -2,7 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAdd, faSubtract } from "@fortawesome/free-solid-svg-icons";
 
-const AddedProduct = ({ addedProduct, handleProductDelete }) => {
+const AddedProduct = ({
+  addedProduct,
+  handleProductDelete,
+  handleAddBook,
+  handleSubBook,
+}) => {
   return (
     <div className="border-2 rounded-md border-slate-400 p-3 my-3 mx-4 md:mx-0">
       <div className="flex justify-between items-center">
@@ -16,13 +21,13 @@ const AddedProduct = ({ addedProduct, handleProductDelete }) => {
       <div className="flex items-center mt-1">
         <div className="pr-2">Số Lượng: </div>
         <div className="border-b-2 rounded-md border-slate-400 px-1">
-          <button>
+          <button onClick={() => handleSubBook(addedProduct.id)}>
             <FontAwesomeIcon icon={faSubtract} />
           </button>
           <span className="inline-block px-2 font-bold">
             {addedProduct.quality}
           </span>
-          <button>
+          <button onClick={() => handleAddBook(addedProduct.id)}>
             <FontAwesomeIcon icon={faAdd} />
           </button>
         </div>

@@ -16,22 +16,51 @@ const Shop = () => {
       .then((data) => setBooks(data));
   }, []);
 
+  const handleAddBook = (id) => {
+    setCart(
+      cart.map((product) =>
+        product.id === id
+          ? { ...product, quality: product.quality + 1 }
+          : product
+      )
+    );
+  };
   //event handler for add to cart button of books
   const addToCartHandler = (book) => {
-    console.log(!cart.every((product) => product.id !== book.id));
     if (!cart.every((product) => product.id !== book.id)) {
       const newCart = cart.map((product) =>
         product.id === book.id
-          ? { id: book.id, name: book.name, quality: product.quality + 1 }
+          ? {
+              id: book.id,
+              name: book.name,
+              quality: product.quality + 1,
+              price: book.price,
+            }
           : product
       );
       setCart(newCart);
     } else {
-      const newCart = [...cart, { id: book.id, name: book.name, quality: 1 }];
+      const newCart = [
+        ...cart,
+        { id: book.id, name: book.name, quality: 1, price: book.price },
+      ];
       setCart(newCart);
     }
   };
-  console.log(cart);
+  const handleSubBook = (id) => {
+    const book = cart.find((book) => book.id === id);
+    if (book.quality === 1) {
+      setCart(cart.filter((book) => book.id !== id));
+    } else
+      setCart(
+        cart.map((product) =>
+          product.id === id
+            ? { ...product, quality: product.quality - 1 }
+            : product
+        )
+      );
+  };
+  // console.log(books);
   //event handler for choose 1 for me button
 
   //event handler for choose again button
@@ -66,6 +95,8 @@ const Shop = () => {
           cart={cart}
           chooseAgainHandler={chooseAgainHandler}
           handleProductDelete={handleProductDelete}
+          handleAddBook={handleAddBook}
+          handleSubBook={handleSubBook}
         ></Cart>
       </div>
     </div>
