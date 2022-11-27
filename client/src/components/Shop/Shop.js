@@ -15,7 +15,7 @@ const Shop = () => {
       .then((res) => res.json())
       .then((data) => setBooks(data));
   }, []);
-
+  console.log(books);
   const handleAddBook = (id) => {
     setCart(
       cart.map((product) =>
@@ -74,7 +74,7 @@ const Shop = () => {
   };
 
   return (
-    <div id="shop-container" className="grid md:flex">
+    <div id="shop-container" className="grid md:flex ">
       <div
         id="product-container"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 py-10 lg:w-4/5 md:w-3/4 px-12"
