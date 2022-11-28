@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/index";
-import { FaCaretDown, FaShoppingCart } from "react-icons/fa";
+import { FaCaretDown, FaSearch } from "react-icons/fa";
+
 const Header = () => {
   const { setUser, openSetting, setOpenSetting } = useGlobalContext();
   const navigate = useNavigate();
@@ -17,6 +18,16 @@ const Header = () => {
           Book store
         </h1>
 
+        <div className="relative">
+          <button className="absolute top-1/2 -translate-y-1/2 left-4 -translate-x-1/2">
+            <FaSearch />
+          </button>
+          <input
+            type="text"
+            className="max-w-sm w-96 pl-8 py-2 rounded-md"
+            placeholder="Find Book here"
+          />
+        </div>
         {!user ? (
           <button
             onClick={() => navigate("/login")}

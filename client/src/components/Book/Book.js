@@ -3,6 +3,7 @@ import "./Book.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useGlobalContext } from "../../context";
+import { FaUncharted } from "react-icons/fa";
 
 const Book = ({ book }) => {
   const { addToCartHandler } = useGlobalContext();
@@ -16,9 +17,15 @@ const Book = ({ book }) => {
 
       <button
         onClick={() => addToCartHandler(book)}
-        className="bg-black text-white w-full absolute bottom-0 left-0 border-2 py-3 font-semibold"
+        className="bg-black text-white w-1/2 absolute bottom-0 left-0 border-2 py-3 font-semibold border-black"
       >
         Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
+      </button>
+      <button
+        onClick={() => addToCartHandler(book)}
+        className="bg-white text-black w-1/2 absolute bottom-0 right-0 border-2 border-black py-3 font-semibold"
+      >
+        View detail <FaUncharted className="inline-block" />
       </button>
     </div>
   );

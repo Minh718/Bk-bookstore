@@ -4,17 +4,26 @@ import AddedProduct from "../AddedProduct/AddedProduct";
 
 const Cart = ({}) => {
   const [totalPrice, setTotalPrice] = useState(0);
+  const [idItemChoosed, setIdItemChoosed] = useState([]);
   const { cart, chooseAgainHandler } = useGlobalContext();
+  const handleItemChoosed = (e, id) => {
+    if (e.target.checked) {
+      setIdItemChoosed([...idItemChoosed, id]);
+    } else {
+      setIdItemChoosed(idItemChoosed.filter((idItem) => idItem !== id));
+    }
+  };
   useEffect(() => {
     const totalPriceNew = !cart
       ? 0
       : cart.reduce((tichLuy, product) => {
-          tichLuy += product.price * product.quality;
+          if (idItemChoosed.includes(product.id)) {
+            tichLuy += product.price * product.quality;
+          }
           return tichLuy;
         }, 0);
     setTotalPrice(totalPriceNew);
-    console.log(totalPriceNew);
-  }, [cart]);
+  }, [cart, idItemChoosed]);
 
   return (
     <div>
@@ -29,13 +38,14 @@ const Cart = ({}) => {
           <AddedProduct
             key={addedProduct.id}
             addedProduct={addedProduct}
+            handleItemChoosed={handleItemChoosed}
           ></AddedProduct>
         ))}
       </div>
-      {totalPrice !== 0 ? (
+      {cart.length !== 0 ? (
         <>
-          <h1 className="text-left mb-4 pl-3 text-xl font-bold">
-            Total price: <span>{totalPrice}$</span>
+          <h1 className="text-left mb-4 pl-3 text-xl">
+            Total price: <span className="font-bold">{totalPrice}$</span>
           </h1>
           <div className="flex px-3 justify-between mb-5 mx-4 md:mx-0">
             <button className="bg-black text-white p-2 font-medium rounded-md">

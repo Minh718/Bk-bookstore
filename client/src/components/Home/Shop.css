@@ -1,0 +1,33 @@
+.PaginateBookUL {
+  display: flex;
+  justify-content: end;
+  color: #fff;
+}
+.PaginateBookNext,
+.PaginateBookPrevious,
+.PaginateBookLI {
+  margin-left: 2px;
+  font-weight: bold;
+}
+.PaginateBookNext > a {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.PaginateBookPrevious > a {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.PaginateBookUL > .selected > a {
+  background: #fff;
+  color: #000;
+}
+.PaginateBookUL > .disabled > a {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.PaginateBookUL > li > a {
+  background: #000;
+  padding: 7px 14px;
+  display: inline-block;
+  border: 2px solid #000;
+}
