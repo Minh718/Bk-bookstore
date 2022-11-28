@@ -1,19 +1,20 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAdd, faSubtract } from "@fortawesome/free-solid-svg-icons";
+import { useGlobalContext } from "../../context";
 
-const AddedProduct = ({
-  addedProduct,
-  handleProductDelete,
-  handleAddBook,
-  handleSubBook,
-}) => {
+const AddedProduct = ({ addedProduct }) => {
+  const { handleProductDelete, handleAddBook, handleSubBook } =
+    useGlobalContext();
   return (
     <div className="border-2 rounded-md border-slate-400 p-3 my-3 mx-4 md:mx-0">
       <div className="flex justify-between items-center">
-        <h6 className="text-sm font-semibold text-left w-4/5">
-          {addedProduct?.name}
-        </h6>
+        <div className="flex items-center pl-4">
+          <img src={addedProduct?.picture} className="h-20" />
+          <h6 className="text-xl font-semibold text-left w-4/5 ml-3">
+            {addedProduct?.name}
+          </h6>
+        </div>
         <button onClick={() => handleProductDelete(addedProduct)}>
           <FontAwesomeIcon icon={faTrash} />
         </button>
@@ -25,7 +26,7 @@ const AddedProduct = ({
             <FontAwesomeIcon icon={faSubtract} />
           </button>
           <span className="inline-block px-2 font-bold">
-            {addedProduct.quality}
+            {addedProduct?.quality}
           </span>
           <button onClick={() => handleAddBook(addedProduct.id)}>
             <FontAwesomeIcon icon={faAdd} />

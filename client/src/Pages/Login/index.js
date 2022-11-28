@@ -5,16 +5,15 @@ import React, { useRef, useState } from "react";
 import Register from "../register3";
 import InputField from "../../customField/InputField/InputField";
 import axios from "axios";
+import { useGlobalContext } from "../../context";
 const LoginPage = () => {
   const [openRegister, setOpenRegister] = useState(false);
+  const { setUser } = useGlobalContext();
   const refPassword = useRef();
   const refPhoneEmail = useRef();
   return (
     <>
       <div className="page-login text-left">
-        {/* <div className="slide-film">
-          <h1>Buy book heere</h1>
-        </div> */}
         <div className="container-form">
           <h1 className="text-3xl">Đăng nhập</h1>
           <Formik
@@ -30,6 +29,16 @@ const LoginPage = () => {
             })}
             onSubmit={async (values, { setSubmitting, setFieldError }) => {
               try {
+                setUser({
+                  Fname: "Nguyễn",
+                  Minit: "Thanh",
+                  Lname: "Minh",
+                  UserId: 1,
+                  city: "HCM",
+                  Street: "KK",
+                  DoB: "12/11/2000",
+                  isAdmin: 1,
+                });
                 // const data = await axios.post(
                 //   `${url_database}/users/login`,
                 //   values

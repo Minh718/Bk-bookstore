@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../context/index";
+import { FaCaretDown, FaShoppingCart } from "react-icons/fa";
 const Header = () => {
+  const { setUser, openSetting, setOpenSetting } = useGlobalContext();
   const navigate = useNavigate();
+  const { user } = useGlobalContext();
   return (
     <div className="bg-black p-2">
       <div className="max-w-7xl flex justify-between items-center m-auto">
@@ -12,12 +16,45 @@ const Header = () => {
         >
           Book store
         </h1>
-        <button
-          onClick={() => navigate("/login")}
-          className="rounded p-2 border-white text-white outline"
-        >
-          Đăng nhập
-        </button>
+
+        {!user ? (
+          <button
+            onClick={() => navigate("/login")}
+            className="rounded p-2 border-white text-white outline"
+          >
+            Đăng nhập
+          </button>
+        ) : (
+          <div className="relative">
+            <button
+              className="text-white text-2xl ml-2"
+              onClick={(e) => {
+                setOpenSetting(!openSetting);
+                e.stopPropagation();
+              }}
+            >
+              <FaCaretDown />
+            </button>
+            {openSetting && (
+              <div className="absolute top-full rounded shadow-md bg-white right-0 w-40">
+                <Link to="/profile">
+                  <button className="p-2">Profile</button>
+                </Link>
+                <hr />
+                <Link to="/profile">
+                  <button className="p-2">Purchase history</button>
+                </Link>
+                <hr />
+                <Link to="/">
+                  <button className="p-2" onClick={() => setUser(null)}>
+                    Logout
+                  </button>
+                </Link>
+                <hr />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
