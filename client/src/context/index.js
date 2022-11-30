@@ -6,11 +6,13 @@ const AppProvider = ({ children }) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
+  const [order, setOrder] = useState([]);
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("cart")) || null
   );
   const [openSetting, setOpenSetting] = useState(false);
   const handleAddBook = (id) => {
+    console.log(id);
     setCart(
       cart.map((product) =>
         product.id === id
@@ -86,6 +88,8 @@ const AppProvider = ({ children }) => {
         cart,
         openSetting,
         setOpenSetting,
+        setOrder,
+        order,
       }}
     >
       {children}

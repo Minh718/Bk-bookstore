@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAdd, faSubtract } from "@fortawesome/free-solid-svg-icons";
 import { useGlobalContext } from "../../context";
 
-const AddedProduct = ({ addedProduct, handleItemChoosed }) => {
+const AddedProduct = ({ addedProduct, handleItemChoosed, isPaying }) => {
   const { handleProductDelete, handleAddBook, handleSubBook } =
     useGlobalContext();
 
@@ -43,11 +43,13 @@ const AddedProduct = ({ addedProduct, handleItemChoosed }) => {
             </button>
           </div>
         </div>
-        <input
-          type="checkbox"
-          className="text scale-150 cursor-pointer"
-          onChange={(e) => handleItemChoosed(e, addedProduct?.id)}
-        />
+        {!isPaying && (
+          <input
+            type="checkbox"
+            className="text scale-150 cursor-pointer"
+            onChange={(e) => handleItemChoosed(e, addedProduct?.id)}
+          />
+        )}
       </div>
     </div>
   );

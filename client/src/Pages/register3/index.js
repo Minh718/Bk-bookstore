@@ -175,7 +175,6 @@ export default function Register({ setOpenRegister }) {
           <button
             type="button"
             className="button-secondary"
-            outline
             onClick={handleGoToLogin}
           >
             Đi đến đăng nhập

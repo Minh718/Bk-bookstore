@@ -12,7 +12,10 @@ const Header = () => {
     <div className="bg-black p-2">
       <div className="max-w-7xl flex justify-between items-center m-auto">
         <h1
-          onClick={() => navigate("/")}
+          onClick={() => {
+            navigate("/");
+            window.location.reload();
+          }}
           className="text-2xl lg:text-4xl font-semibold font-serif py-5 text-white cursor-pointer"
         >
           Book store
@@ -47,7 +50,7 @@ const Header = () => {
               <FaCaretDown />
             </button>
             {openSetting && (
-              <div className="absolute top-full rounded shadow-md bg-white right-0 w-40">
+              <div className="z-50 absolute top-full rounded shadow-md bg-white right-0 w-40">
                 <Link to="/profile">
                   <button className="p-2">Profile</button>
                 </Link>

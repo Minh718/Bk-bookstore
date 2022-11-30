@@ -36,6 +36,8 @@ const LoginPage = () => {
                   UserId: 1,
                   city: "HCM",
                   Street: "KK",
+                  Email: "a@gmail.com",
+                  Phone: "0919701101",
                   DoB: "12/11/2000",
                   isAdmin: 1,
                 });
@@ -95,7 +97,6 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => setOpenRegister(true)}
                 className="button-secondary"
-                outline
               >
                 Đăng ký
               </button>

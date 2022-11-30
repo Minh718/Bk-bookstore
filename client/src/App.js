@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
+import Home from "./Pages/Home/Home";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -12,6 +12,9 @@ import {
 import LoginPage from "./Pages/Login";
 import Footer from "./components/Footer/index";
 import { useGlobalContext } from "./context";
+import { DisplayBooks } from "./components/displayBooks";
+import { Payment } from "./components/payment";
+import PaymentSuccess from "./components/PaymentCuccess";
 
 const AppMain = () => {
   return (
@@ -28,7 +31,11 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<AppMain />}>
-        <Route path="" element={<Home />} />
+        <Route path="/" element={<Home />}>
+          <Route path="/" element={<DisplayBooks />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="paymentSuccess" element={<PaymentSuccess />} />
+        </Route>
         <Route
           path="login"
           element={!user ? <LoginPage /> : <Navigate to="/" />}
@@ -38,9 +45,6 @@ function App() {
   );
   return (
     <div className="App" onClick={() => setOpenSetting(false)}>
-      {/* <Header></Header>
-      <Shop></Shop> */}
-
       <RouterProvider router={router} />
     </div>
   );

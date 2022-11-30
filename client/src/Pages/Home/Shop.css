@@ -31,3 +31,11 @@
   display: inline-block;
   border: 2px solid #000;
 }
+.homePage {
+  min-height: calc(100vh - 196px);
+}
+#cart-container {
+  height: calc(100vh - 196px);
+  overflow-y: scroll;
+}
+/* cart-container-left */
