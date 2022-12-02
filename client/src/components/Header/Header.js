@@ -59,6 +59,10 @@ const Header = () => {
                   <button className="p-2">Purchase history</button>
                 </Link>
                 <hr />
+                <Link to="/adminPage/home">
+                  <button className="p-2">Admin</button>
+                </Link>
+                <hr />
                 <Link to="/">
                   <button className="p-2" onClick={() => setUser(null)}>
                     Logout

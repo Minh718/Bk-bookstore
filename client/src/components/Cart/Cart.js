@@ -28,7 +28,7 @@ const Cart = ({ nextPage }) => {
           }
           return tichLuy;
         }, 0);
-    setChoosedBooks(cart.filter((book) => idItemChoosed.includes(book.id)));
+    setChoosedBooks(cart?.filter((book) => idItemChoosed.includes(book.id)));
     setTotalPrice(totalPriceNew);
   }, [cart, idItemChoosed]);
   const handleSuccessPayment = () => {
@@ -88,7 +88,7 @@ const Cart = ({ nextPage }) => {
                 ></AddedProduct>
               ))}
         </div>
-        {cart.length !== 0 || nextPage === "over" ? (
+        {cart?.length !== 0 || nextPage === "over" ? (
           <>
             {totalPrice !== 0 && (
               <h1 className="text-left mb-4 pl-3 text-xl">

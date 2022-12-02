@@ -8,7 +8,7 @@ const AppProvider = ({ children }) => {
   );
   const [order, setOrder] = useState([]);
   const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || null
+    JSON.parse(localStorage.getItem("cart")) || []
   );
   const [openSetting, setOpenSetting] = useState(false);
   const handleAddBook = (id) => {
