@@ -6,7 +6,10 @@ const AppProvider = ({ children }) => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );
-  const [order, setOrder] = useState([]);
+  const [jwt, setJwt] = useState(
+    JSON.parse(localStorage.getItem("jwt")) || null
+  );
+  const [orders, setOrders] = useState([]);
   const [cart, setCart] = useState(
     JSON.parse(localStorage.getItem("cart")) || []
   );
@@ -69,6 +72,9 @@ const AppProvider = ({ children }) => {
     setCart(rest);
   };
   useEffect(() => {
+    localStorage.setItem("jwt", JSON.stringify(jwt));
+  }, [jwt]);
+  useEffect(() => {
     localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
   useEffect(() => {
@@ -88,8 +94,10 @@ const AppProvider = ({ children }) => {
         cart,
         openSetting,
         setOpenSetting,
-        setOrder,
-        order,
+        setOrders,
+        orders,
+        jwt,
+        setJwt,
       }}
     >
       {children}

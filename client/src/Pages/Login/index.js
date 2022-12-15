@@ -6,9 +6,10 @@ import Register from "../register3";
 import InputField from "../../customField/InputField/InputField";
 import axios from "axios";
 import { useGlobalContext } from "../../context";
+import { url_database } from "../../api";
 const LoginPage = () => {
   const [openRegister, setOpenRegister] = useState(false);
-  const { setUser } = useGlobalContext();
+  const { setUser, setJwt } = useGlobalContext();
   const refPassword = useRef();
   const refPhoneEmail = useRef();
   return (
@@ -18,45 +19,30 @@ const LoginPage = () => {
           <h1 className="text-3xl">Đăng nhập</h1>
           <Formik
             initialValues={{
-              phoneEmail: "",
+              email: "",
               password: "",
             }}
             validationSchema={Yup.object({
-              phoneEmail: Yup.string().required("Vui lòng nhập trường này"),
+              email: Yup.string().required("Vui lòng nhập trường này"),
               password: Yup.string()
-                .min(8, "Mật khẩu ít nhất 8 ký tự")
+                .min(6, "Mật khẩu ít nhất 6 ký tự")
                 .required("Vui lòng nhập trường này"),
             })}
             onSubmit={async (values, { setSubmitting, setFieldError }) => {
               try {
-                setUser({
-                  Fname: "Nguyễn",
-                  Minit: "Thanh",
-                  Lname: "Minh",
-                  UserId: 1,
-                  city: "HCM",
-                  Street: "KK",
-                  Email: "a@gmail.com",
-                  Phone: "0919701101",
-                  DoB: "12/11/2000",
-                  isAdmin: 1,
-                });
-                // const data = await axios.post(
-                //   `${url_database}/users/login`,
-                //   values
-                // );
-                // // console.log(data);
-                // setUser(data.data);
+                console.log(`${url_database}/auth/login`);
+                const data = await axios.post(
+                  `${url_database}/auth/login`,
+                  values
+                );
+                setJwt(data.data.result.accessToken);
+                setUser(data.data.result.user);
               } catch (err) {
                 const res = err.response.data;
-                console.log(res);
                 if (!res.phoneEmail) {
-                  setFieldError(
-                    "phoneEmail",
-                    "Email hoặc số điện thoại không dúng"
-                  );
+                  setFieldError("email", "Email không dúng");
                   values.password = "";
-                  values.phoneEmail = "";
+                  values.email = "";
                   refPhoneEmail.current.focus();
                 } else {
                   setFieldError("password", "Mật khẩu không chính xác");
@@ -68,13 +54,13 @@ const LoginPage = () => {
             }}
           >
             <Form className="formLogin">
-              <FastField name="phoneEmail">
+              <FastField name="email">
                 {(props) => (
                   <InputField
                     {...props}
-                    type="text"
-                    placeholder="Email hoặc số điện thoại"
-                    label="Email hoặc số điện thoại"
+                    type="email"
+                    placeholder="Email"
+                    label="Email"
                     ref={refPhoneEmail}
                   />
                 )}

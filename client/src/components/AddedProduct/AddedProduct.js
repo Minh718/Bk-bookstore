@@ -19,7 +19,7 @@ const AddedProduct = ({ addedProduct, handleItemChoosed, isPaying }) => {
             <div>
               Price:
               <span className="text-xl font-semibold text-left ml-1">
-                {addedProduct?.price}$
+                {addedProduct?.price}đ
               </span>
             </div>
           </div>

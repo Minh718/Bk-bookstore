@@ -7,7 +7,6 @@ function Common({ children, openBar }) {
   const navigate = useNavigate();
   const { setUser } = useGlobalContext();
   const [index, setIndex] = useState(0);
-  console.log(openBar);
   return (
     <div className="common-page">
       <div className={openBar ? "left-page" : "left-page move-left-page"}>
@@ -19,12 +18,6 @@ function Common({ children, openBar }) {
             >
               Quản lý Tài khoản
               {index === 1 ? <FaAngleUp /> : <FaAngleDown />}
-            </div>
-            <div
-              className={index === 1 ? "click-down active" : "click-down"}
-              onClick={() => navigate("/adminPage/addAdmin")}
-            >
-              Thêm tài khoản
             </div>
             <div
               className={index === 1 ? "click-down active" : "click-down"}
@@ -76,6 +69,12 @@ function Common({ children, openBar }) {
             >
               Quản lý loại sách
               {index === 4 ? <FaAngleUp /> : <FaAngleDown />}
+            </div>
+            <div
+              className={index === 4 ? "click-down active" : "click-down"}
+              onClick={() => navigate("/adminPage/addTypeBook")}
+            >
+              Thêm Loại sách
             </div>
             <div
               className={index === 4 ? "click-down active" : "click-down"}

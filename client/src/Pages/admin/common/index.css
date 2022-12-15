@@ -1,18 +1,22 @@
 .common-page {
   display: flex;
+  height: calc(100vh - 82px);
+  position: relative;
 }
 .common-page .left-page {
   width: 220px;
   height: 100%;
-  background: #293241;
-  height: calc(100vh - 80px);
-  position: fixed;
+  background: #fff;
+  top: 0px;
+  position: absolute;
   bottom: 0px;
   left: 0px;
   transition: all 0.3s ease-out;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 2px solid #000;
+  text-align: left;
   /* align-items: center; */
 }
 .common-page .left-page.move-left-page {
@@ -38,6 +42,7 @@
   padding: 10px 15px;
   cursor: pointer;
   transition: all 0.3s linear;
+  color: #000 !important;
 }
 .accordion:hover {
   /* color: #293241; */

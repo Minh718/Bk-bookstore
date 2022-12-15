@@ -1,43 +1,69 @@
-import React, { useRef, useState } from "react";
-import { ErrorMessage, FastField, Form, Formik } from "formik";
+import React, { useEffect, useRef, useState } from "react";
+import { ErrorMessage, FastField, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import InputField from "../../../../customField/InputField/InputField";
 import SelectField from "../../../../customField/selectField/SelectField";
 import { FaFileImage } from "react-icons/fa";
+import { url_database } from "../../../../api";
+import { useGlobalContext } from "../../../../context";
 export const AddBook = () => {
-  const [errorRegister, setErrorRegister] = useState(false);
+  const [fileImg, setFileImg] = useState(null);
+  const [typeBooks, setTypebook] = useState([]);
+  const { jwt } = useGlobalContext();
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await axios.get(`${url_database}/type-book`);
+        setTypebook(data.data.result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
   return (
-    <div className="flex p-[40px] text-left">
+    <div className="flex p-[10px] text-left">
       <Formik
         initialValues={{
-          file: null,
-          PublishedYear: "",
-          Sumary: "",
+          // file: null,
+          publishedYear: "",
+          summary: "",
           name: "",
-          Author: "",
-          Price: "",
-          numberBooks: "",
-          TypeBook: "",
+          author: "",
+          price: "",
+          inStock: "",
+          typeBookId: "",
         }}
         validationSchema={Yup.object({
-          file: Yup.mixed().required("Vui lòng thêm file ảnh"),
-          Sumary: Yup.string().required("Vui lòng nhập trường này"),
+          // file: Yup.mixed().required("Vui lòng thêm file ảnh"),
+          summary: Yup.string().required("Vui lòng nhập trường này"),
           name: Yup.string().required("Vui lòng nhập trường này"),
-          Price: Yup.number().required("Vui lòng nhập trường này"),
-          PublishedYear: Yup.number().required("Vui lòng nhập trường này"),
-          numberBooks: Yup.number().required("Vui lòng nhập trường này"),
-          Author: Yup.string().required("Vui lòng nhập trường này"),
-          TypeBook: Yup.string().required("Vui lòng chọn loại sách"),
+          price: Yup.number().required("Vui lòng nhập trường này"),
+          publishedYear: Yup.number().required("Vui lòng nhập trường này"),
+          inStock: Yup.number().required("Vui lòng nhập trường này"),
+          author: Yup.string().required("Vui lòng nhập trường này"),
+          typeBookId: Yup.number().required("Vui lòng chọn loại sách"),
         })}
-        onSubmit={(values, { setValues }) => {
+        onSubmit={async (values, { setValues, resetForm }) => {
           try {
-            console.log(values);
+            if (fileImg) {
+              const formData = new FormData();
+              formData.append("image", fileImg);
+              console.log(fileImg);
+              const res = await axios.post(`${url_database}/upload`, formData);
+              const picture = res.data.result.url;
+              // console.log({ ...values, picture: picture });
+              await axios.post(
+                `${url_database}/book`,
+                {
+                  ...values,
+                  picture: picture,
+                },
+                { headers: { Authorization: `Bearer ${jwt}` } }
+              );
+            }
+            resetForm();
           } catch (err) {
-            setTimeout(() => {
-              setErrorRegister(false);
-            }, 3000);
-            setErrorRegister(true);
             console.log(err.response);
           }
         }}
@@ -55,7 +81,7 @@ export const AddBook = () => {
                 />
               )}
             </FastField>
-            <FastField name="PublishedYear">
+            <FastField name="publishedYear">
               {(props) => (
                 <InputField
                   type="number"
@@ -67,7 +93,7 @@ export const AddBook = () => {
             </FastField>
           </div>
           <div className="container-2field">
-            <FastField name="Price">
+            <FastField name="price">
               {(props) => (
                 <InputField
                   type="number"
@@ -77,19 +103,21 @@ export const AddBook = () => {
                 />
               )}
             </FastField>
-            <FastField name="TypeBook">
+            <FastField name="typeBookId">
               {(props) => (
-                <SelectField {...props} label="Giới tính">
-                  <option value="">Chọn giới tính</option>
-                  <option value="nam">Thảm hiểm</option>
-                  <option value="nữ">Đào núi</option>
-                  <option value="Khác">Lấp biển</option>
+                <SelectField {...props} label="Loại sách">
+                  <option value="">Chọn loại sách</option>
+                  {typeBooks.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
                 </SelectField>
               )}
             </FastField>
           </div>
           <div className="container-2field">
-            <FastField name="Author">
+            <FastField name="author">
               {(props) => (
                 <InputField
                   type="text"
@@ -99,18 +127,18 @@ export const AddBook = () => {
                 />
               )}
             </FastField>
-            <FastField name="numberBooks">
+            <FastField name="inStock">
               {(props) => (
                 <InputField
                   type="number"
                   {...props}
                   placeholder="e.g, 50"
-                  label="Số lượng sách"
+                  label="Thêm lượng sách"
                 />
               )}
             </FastField>
           </div>
-          <FastField name="Sumary">
+          <FastField name="summary">
             {(props) => (
               <>
                 <label htmlFor={props.field.name}>Thông tin về sách</label>
@@ -127,7 +155,7 @@ export const AddBook = () => {
               </>
             )}
           </FastField>
-          <FastField name="file">
+          <Field name="file">
             {(props) => (
               <>
                 {/* <label htmlFor={props.field.name}>
@@ -141,8 +169,16 @@ export const AddBook = () => {
                     type="file"
                     name="file"
                     className="opacity-0"
+                    onChange={(e) => setFileImg(e.target.files[0])}
                   />
                 </label>
+
+                {fileImg && (
+                  <img
+                    className="h-[150px] m-auto"
+                    src={URL.createObjectURL(fileImg)}
+                  />
+                )}
                 <ErrorMessage
                   name="file"
                   component="div"
@@ -150,7 +186,7 @@ export const AddBook = () => {
                 />
               </>
             )}
-          </FastField>
+          </Field>
           <button type="submit" className="button-primary">
             Thêm sách
           </button>

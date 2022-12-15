@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useGlobalContext } from "../../context";
 import { FaUncharted } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 const Book = ({ book }) => {
+  const nagivate = useNavigate();
   const { addToCartHandler } = useGlobalContext();
   return (
     <div className="border-2 border-black relative">
@@ -13,7 +14,7 @@ const Book = ({ book }) => {
         <img className="w-2/5 " src={book.picture} alt="" />
       </div>
       <h4 className="text-lg md:text-xl font-bold font-sans">{book.name}</h4>
-      <h6 className="text-lg font-medium mt-2 mb-14">Price: ${book.price}</h6>
+      <h6 className="text-lg font-medium mt-2 mb-14">Price: {book.price}đ</h6>
 
       <button
         onClick={() => addToCartHandler(book)}
@@ -22,7 +23,11 @@ const Book = ({ book }) => {
         Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
       </button>
       <button
-        onClick={() => addToCartHandler(book)}
+        onClick={() =>
+          nagivate("/detailBook", {
+            state: { book: book },
+          })
+        }
         className="bg-white text-black w-1/2 absolute bottom-0 right-0 border-2 border-black py-3 font-semibold"
       >
         View detail <FaUncharted className="inline-block" />

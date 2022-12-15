@@ -4,7 +4,7 @@ import "./style.css";
 export default function HomeAdmin() {
   return (
     <>
-      <div className="page-admin">fdsafsdfsdf</div>
+      <div className="page-admin pt-14 text-4xl">Trang chủ admin</div>
     </>
   );
 }

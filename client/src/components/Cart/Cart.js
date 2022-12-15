@@ -10,7 +10,7 @@ const Cart = ({ nextPage }) => {
   const [idItemChoosed, setIdItemChoosed] = useState([]);
   const [choosedBooks, setChoosedBooks] = useState([]);
   const [openPaymentQR, setOpenPaymentQR] = useState(false);
-  const { cart, chooseAgainHandler, setOrder, order, setCart } =
+  const { cart, chooseAgainHandler, setOrders, orders, setCart } =
     useGlobalContext();
   const handleItemChoosed = (e, id) => {
     if (e.target.checked) {
@@ -32,13 +32,14 @@ const Cart = ({ nextPage }) => {
     setTotalPrice(totalPriceNew);
   }, [cart, idItemChoosed]);
   const handleSuccessPayment = () => {
-    setOrder([
-      ...order,
+    setOrders([
       {
-        statusOrder: "Đang vận chuyển",
-        DateOrder: new Date(),
+        statusOrder: "ON_PREPARING",
+        createdAt: new Date(),
         books: choosedBooks,
+        totalPrice: totalPrice,
       },
+      ...orders,
     ]);
     setCart(cart.filter((book) => !idItemChoosed.includes(book.id)));
     setChoosedBooks([]);
@@ -49,7 +50,7 @@ const Cart = ({ nextPage }) => {
     // const choosedBooks = cart.filter((book) => idItemChoosed.includes(book.id));
     // setChoosedBooks(choosedBooks);
     navigate(`/${nextPage}`);
-    // setOrder([
+    // setOrders([
     //   ...order,
     //   {
     //     conditionShip: "Đang vận chuyển",
@@ -92,7 +93,7 @@ const Cart = ({ nextPage }) => {
           <>
             {totalPrice !== 0 && (
               <h1 className="text-left mb-4 pl-3 text-xl">
-                Total price: <span className="font-bold">{totalPrice}$</span>
+                Total price: <span className="font-bold">{totalPrice}đ</span>
               </h1>
             )}
 

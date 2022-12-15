@@ -1,56 +1,30 @@
-import React, { useRef, useState } from "react";
-import "./style.css";
-import { ErrorMessage, FastField, Form, Formik } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
-import { url_database } from "../../api/index";
+import { FastField, Form, Formik } from "formik";
+import React, { useState } from "react";
+import { useGlobalContext } from "../../context";
 import InputField from "../../customField/InputField/InputField";
 import SelectField from "../../customField/selectField/SelectField";
-export default function Register({ setOpenRegister }) {
-  console.log(url_database);
-  const [goToLogin, setGoToLogin] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorRegister, setErrorRegister] = useState(false);
-  const refPhone = useRef();
-  const handleGoToLogin = () => {
-    // setTimeout(() => {
-    setGoToLogin(true);
-    setTimeout(() => {
-      setOpenRegister(false);
-    }, 380);
-    // }, 2000);
-  };
-  console.log(refPhone);
-  if (isSuccess) {
-    return (
-      <div className="container-register">
-        <div
-          className={!goToLogin ? "form-register" : "form-register closeForm"}
-        >
-          <h1 style={{ color: "#54B435" }}>Đăng ký thành công</h1>
-        </div>
-      </div>
-    );
-  }
+import * as Yup from "yup";
+import axios from "axios";
+import { url_database } from "../../api";
+export const Profile = () => {
+  const { user } = useGlobalContext();
+  const [disabledEdit, setDisabledEdit] = useState(true);
   return (
-    <div className="container-register text-left">
+    <div className="min-height">
       <Formik
         initialValues={{
-          firstname: "",
-          lastname: "",
-          phone: "",
-          email: "",
-          city: "",
-          street: "",
-          password: "",
-          gender: "",
-          passwordConfirmation: "",
+          firstname: user.firstname,
+          lastname: user.lastname,
+          phone: user.phone,
+          email: user.email,
+          address: user.address,
+          password: user.password,
+          gender: user.gender,
         }}
         validationSchema={Yup.object({
           firstname: Yup.string().required("Vui lòng nhập trường này"),
           lastname: Yup.string().required("Vui lòng nhập trường này"),
-          city: Yup.string().required("Vui lòng nhập trường này"),
-          street: Yup.string().required("Vui lòng nhập trường này"),
+          address: Yup.string().required("Vui lòng nhập trường này"),
 
           email: Yup.string()
             .email("Trường này phải là email")
@@ -65,10 +39,10 @@ export default function Register({ setOpenRegister }) {
           password: Yup.string()
             .required("No password provided.")
             .min(8, "Password is too short - should be 8 chars minimum."),
-          passwordConfirmation: Yup.string().oneOf(
-            [Yup.ref("password"), null],
-            "Passwords must match"
-          ),
+          //   passwordConfirmation: Yup.string().oneOf(
+          //     [Yup.ref("password"), null],
+          //     "Passwords must match"
+          //   ),
         })}
         onSubmit={async (values, { setValues }) => {
           try {
@@ -92,26 +66,13 @@ export default function Register({ setOpenRegister }) {
               phone,
               password,
             });
-            setIsSuccess(true);
-            setTimeout(() => {
-              handleGoToLogin();
-            }, 2000);
           } catch (err) {
-            values.phone = "";
-            values.email = "";
-            refPhone.current.focus();
-            setTimeout(() => {
-              setErrorRegister(false);
-            }, 3000);
-            setErrorRegister(true);
             console.log(err.response);
           }
         }}
       >
-        <Form
-          className={!goToLogin ? "form-register" : "form-register closeForm"}
-        >
-          <h1 className="text-2xl">Đăng ký tài khoản</h1>
+        <Form className={"form-register text-left m-auto"}>
+          <h1 className="text-2xl">Quản lý tài khoản</h1>
           <div className="container-2field">
             <FastField name="firstname">
               {(props) => (
@@ -120,6 +81,7 @@ export default function Register({ setOpenRegister }) {
                   {...props}
                   placeholder="e.g, Nguyễn"
                   label="Họ"
+                  disabled={disabledEdit}
                 />
               )}
             </FastField>
@@ -130,16 +92,12 @@ export default function Register({ setOpenRegister }) {
                   {...props}
                   placeholder="e.g, Lâm"
                   label="Name"
+                  disabled={disabledEdit}
                 />
               )}
             </FastField>
           </div>
           <div className="container-2field">
-            {errorRegister && (
-              <p className="error-register">
-                Số điện thoại hay email đã được sử dụng
-              </p>
-            )}
             <FastField name="phone">
               {(props) => (
                 <InputField
@@ -147,13 +105,17 @@ export default function Register({ setOpenRegister }) {
                   {...props}
                   placeholder="e.g, 0123456789"
                   label="Phone"
-                  ref={refPhone}
+                  disabled={disabledEdit}
                 />
               )}
             </FastField>
             <FastField name="gender">
               {(props) => (
-                <SelectField {...props} label="Giới tính">
+                <SelectField
+                  {...props}
+                  disabled={disabledEdit}
+                  label="Giới tính"
+                >
                   <option value="">Chọn giới tính</option>
                   <option value="Male">Nam</option>
                   <option value="Female">Nữ</option>
@@ -162,28 +124,17 @@ export default function Register({ setOpenRegister }) {
               )}
             </FastField>
           </div>
-          <div className="container-2field">
-            <FastField name="street">
-              {(props) => (
-                <InputField
-                  type="text"
-                  {...props}
-                  placeholder="e.g, Quang Bửu"
-                  label="Đường"
-                />
-              )}
-            </FastField>
-            <FastField name="city">
-              {(props) => (
-                <InputField
-                  type="text"
-                  {...props}
-                  placeholder="e.g, Đà nẵng"
-                  label="Thành phố"
-                />
-              )}
-            </FastField>
-          </div>
+          <FastField name="address">
+            {(props) => (
+              <InputField
+                {...props}
+                type="text"
+                placeholder="e.g,PVD"
+                label="Address"
+                disabled={disabledEdit}
+              />
+            )}
+          </FastField>
           <FastField name="email">
             {(props) => (
               <InputField
@@ -191,12 +142,14 @@ export default function Register({ setOpenRegister }) {
                 type="email"
                 placeholder="e.g, Cuteo@gmail.com"
                 label="Email"
+                disabled={disabledEdit}
               />
             )}
           </FastField>
           <FastField name="password">
             {(props) => (
               <InputField
+                disabled={disabledEdit}
                 type="password"
                 {...props}
                 placeholder="e.g, ................"
@@ -204,7 +157,7 @@ export default function Register({ setOpenRegister }) {
               />
             )}
           </FastField>
-          <FastField name="passwordConfirmation">
+          {/* <FastField name="passwordConfirmation">
             {(props) => (
               <InputField
                 type="password"
@@ -213,19 +166,18 @@ export default function Register({ setOpenRegister }) {
                 label="Xác nhận mật khẩu"
               />
             )}
-          </FastField>
-          <button type="submit" className="button-primary">
-            Đăng ký
-          </button>
+          </FastField> */}
           <button
-            type="button"
-            className="button-secondary"
-            onClick={handleGoToLogin}
+            className="bg-black transition text-white p-2 mt-5 border-2 border-solid border-black"
+            onClick={() => setDisabledEdit(false)}
           >
-            Đi đến đăng nhập
+            Chỉnh sửa thông tin
+          </button>
+          <button className="ml-2 bg-white transition text-black border-2 border-solid border-black p-2 mt-5">
+            Thây đổi mật khẩu
           </button>
         </Form>
       </Formik>
     </div>
   );
-}
+};

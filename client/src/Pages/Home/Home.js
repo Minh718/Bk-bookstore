@@ -6,7 +6,6 @@ import "./Shop.css";
 const Home = () => {
   const [nextPage, setNextPage] = useState("/");
   const { order } = useGlobalContext();
-  console.log(order);
   return (
     <div id="shop-container" className="grid md:flex justify-between homePage">
       <div className="p-10 grow cart-container-left">

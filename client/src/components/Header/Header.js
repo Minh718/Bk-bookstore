@@ -55,14 +55,18 @@ const Header = () => {
                   <button className="p-2">Profile</button>
                 </Link>
                 <hr />
-                <Link to="/profile">
+                <Link to="/orders">
                   <button className="p-2">Purchase history</button>
                 </Link>
                 <hr />
-                <Link to="/adminPage/home">
-                  <button className="p-2">Admin</button>
-                </Link>
-                <hr />
+                {user?.isAdmin && (
+                  <>
+                    <Link to="/adminPage/home">
+                      <button className="p-2">Admin</button>
+                    </Link>
+                    <hr />
+                  </>
+                )}
                 <Link to="/">
                   <button className="p-2" onClick={() => setUser(null)}>
                     Logout

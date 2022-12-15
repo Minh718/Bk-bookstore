@@ -6,12 +6,12 @@ export const Payment = () => {
   const [editing, setEditing] = useState(false);
   const { setNextPage } = useOutletContext();
   const { user } = useGlobalContext();
-  const [fullname, setFullname] = useState(user.Fname + " " + user.Lname);
-  const [phone, setPhone] = useState(user.Phone);
-  const [address, setAddress] = useState(
-    `Đường ${user.Street}, Thành phố ${user.city}`
-  );
-
+  const [fullName, setFullname] = useState(user.fullName);
+  const [firstname, setFirstname] = useState(user.firstname);
+  const [lastname, setLastname] = useState(user.lastname);
+  const [phone, setPhone] = useState(user.phone);
+  const [address, setAddress] = useState(user.address);
+  console.log(user);
   useEffect(() => {
     setNextPage("paymentSuccess");
   });
@@ -27,7 +27,7 @@ export const Payment = () => {
             </label>
             <input
               disabled={!editing}
-              value={fullname}
+              value={fullName}
               onChange={(e) => setFullname(e.target.value)}
               name="fullame"
               className=" w-full form-control border-solid border-2 border-l-neutral-500 p-1 pl-3 rounded"
@@ -71,8 +71,8 @@ export const Payment = () => {
                 <button
                   onClick={() => {
                     setEditing(false);
-                    setFullname(user.Fname + " " + user.Lname);
-                    setAddress(`Đường ${user.Street}, Thành phố ${user.city}`);
+                    setFullname(user.fullname);
+                    setAddress(user.address);
                     setPhone(user.phone);
                   }}
                   className="border-2 border-solid border-black bg-white px-4 py-1 mt-2 rounded"
